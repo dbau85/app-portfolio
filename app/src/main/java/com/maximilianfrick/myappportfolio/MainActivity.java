@@ -14,11 +14,13 @@ public class MainActivity extends AppCompatActivity {
     @OnClick({R.id.btn_popular_movies, R.id.btn_build_it_bigger, R.id.btn_capstone,
             R.id.btn_go_ubiqutous, R.id.btn_make_your_app_material, R.id.btn_stock_hawk})
     public void onClickProject(Button button) {
-        showToast(button.getText().toString());
+        showToast(button.getText()
+                .toString());
     }
 
     private void showToast(String text) {
-        Toast.makeText(this, getString(R.string.toast_launch_app, text), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.toast_launch_app, text), Toast.LENGTH_SHORT)
+                .show();
     }
 
     @Override
