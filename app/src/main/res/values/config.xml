@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="base_url_themoviedb">https://api.themoviedb.org/</string>
+    <string name="base_url_images">http://image.tmdb.org/t/p/</string>
+</resources>
