@@ -1,4 +1,6 @@
-package com.maximilianfrick.myappportfolio.core;
+package com.maximilianfrick.myappportfolio.core.dagger;
+
+import com.maximilianfrick.myappportfolio.core.BaseApplication;
 
 public final class Injector {
     private static AppComponent appComponent;

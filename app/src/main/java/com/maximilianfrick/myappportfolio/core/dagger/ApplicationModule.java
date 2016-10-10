@@ -1,4 +1,9 @@
-package com.maximilianfrick.myappportfolio.core;
+package com.maximilianfrick.myappportfolio.core.dagger;
+
+import android.content.Context;
+
+import com.maximilianfrick.myappportfolio.core.AppFlowController;
+import com.maximilianfrick.myappportfolio.core.BaseApplication;
 
 import javax.inject.Singleton;
 
@@ -9,9 +14,17 @@ import dagger.Provides;
 public class ApplicationModule {
 
     private BaseApplication application;
+    private Context context;
 
     public ApplicationModule(BaseApplication application) {
         this.application = application;
+        this.context = application.getApplicationContext();
+    }
+
+    @Provides
+    @Singleton
+    Context provideContext() {
+        return context;
     }
 
     @Provides
