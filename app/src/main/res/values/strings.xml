@@ -9,4 +9,5 @@
     <string name="btn_go_ubiqutous">Go Ubiquitous</string>
     <string name="btn_capstone">Capstone</string>
     <string name="toast_launch_app">This button will launch my %s app!</string>
+    <string name="label_movies">Popular Movies</string>
 </resources>
