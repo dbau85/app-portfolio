@@ -13,18 +13,19 @@ import com.maximilianfrick.myappportfolio.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
-    private List<String> movieImages;
+    private ArrayList<String> moviePosterPaths;
     private final Picasso picasso;
+    private String imageBaseUrl;
 
-    MovieListAdapter(Context context, List<String> movieImages) {
-        this.movieImages = movieImages;
+    MovieListAdapter(Context context) {
+        imageBaseUrl = context.getString(R.string.base_url_images);
+        moviePosterPaths = new ArrayList<>();
         picasso = Picasso.with(context);
     }
 
@@ -41,16 +42,16 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return movieImages.size();
+        return moviePosterPaths.size();
     }
 
-    public void setItems(ArrayList<String> images) {
-        this.movieImages = images;
+    public void setItems(ArrayList<String> moviePosterPaths) {
+        this.moviePosterPaths = moviePosterPaths;
         notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.item_image)
+        @BindView(R.id.img_movie_poster)
         ImageView poster;
 
         ViewHolder(View itemView) {
@@ -59,7 +60,8 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>
         }
 
         void updateView(int position) {
-            picasso.load(Uri.parse(movieImages.get(position))).config(Bitmap.Config.RGB_565).into(poster);
+            String finalPosterPath = imageBaseUrl + moviePosterPaths.get(position);
+            picasso.load(Uri.parse(finalPosterPath)).config(Bitmap.Config.RGB_565).into(poster);
         }
     }
 }
