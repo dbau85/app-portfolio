@@ -24,7 +24,15 @@
             android:name=".movies.PopularMoviesActivity"
             android:label="@string/label_movies"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="meintestlink.de" android:scheme="https" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>

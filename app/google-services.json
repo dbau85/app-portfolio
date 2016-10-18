@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "281436137514",
+    "firebase_url": "https://appportfolio-d3734.firebaseio.com",
+    "project_id": "appportfolio-d3734",
+    "storage_bucket": "appportfolio-d3734.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281436137514:android:459a3567ea17ee38",
+        "android_client_info": {
+          "package_name": "com.maximilianfrick.myappportfolio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "281436137514-0s8bvarc0d2fa3npa8fphfs8domr82nf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu3W3CkEZlTzf_GblBYgeyuhjCP3r7M_k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
