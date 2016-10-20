@@ -12,20 +12,19 @@ import android.widget.ImageView;
 import com.maximilianfrick.myappportfolio.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
-    private ArrayList<String> moviePosterPaths;
+    private List<String> moviePosterPaths = Collections.emptyList();
     private final Picasso picasso;
     private String imageBaseUrl;
 
     MovieListAdapter(Context context) {
         imageBaseUrl = context.getString(R.string.base_url_images);
-        moviePosterPaths = new ArrayList<>();
         picasso = Picasso.with(context);
     }
 
@@ -45,7 +44,7 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>
         return moviePosterPaths.size();
     }
 
-    public void setItems(ArrayList<String> moviePosterPaths) {
+    public void setItems(List<String> moviePosterPaths) {
         this.moviePosterPaths = moviePosterPaths;
         notifyDataSetChanged();
     }

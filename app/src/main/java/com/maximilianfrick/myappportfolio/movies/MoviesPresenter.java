@@ -1,39 +1,52 @@
 package com.maximilianfrick.myappportfolio.movies;
 
+import android.support.annotation.NonNull;
+
 import com.maximilianfrick.myappportfolio.core.dagger.Injector;
 import com.maximilianfrick.myappportfolio.movies.models.Movie;
 import com.maximilianfrick.myappportfolio.movies.models.MoviesData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import timber.log.Timber;
+
+import static dagger.internal.Preconditions.checkNotNull;
 
 public class MoviesPresenter implements MoviesContract.Presenter {
 
     @Inject
     MoviesService moviesService;
-    private ArrayList<String> moviePosterPaths;
+    private List<String> moviePosterPaths;
     private final MoviesContract.View moviesView;
+    private MoviesFilterType filterType = MoviesFilterType.POPULAR_MOVIES;
 
     @Override
     public void start() {
-        Injector.getAppComponent().inject(this);
-        loadMovies(null);
+        loadMovies();
     }
 
-    public MoviesPresenter(MoviesContract.View view) {
-        this.moviesView = view;
+    public MoviesPresenter(@NonNull MoviesContract.View view) {
+        Injector.getAppComponent().inject(this);
+        moviesView = checkNotNull(view, "View cannot be null!");
+        moviesView.setPresenter(this);
     }
 
     @Override
-    public void loadMovies(MoviesFilterType filterType) {
+    public void loadMovies() {
         moviePosterPaths = new ArrayList<>();
-        Observable<MoviesData> observable = moviesService.getPopularMovies();
-        observable.observeOn(AndroidSchedulers.mainThread())
+        Observable<MoviesData> moviesDataObservable;
+        if (filterType == MoviesFilterType.POPULAR_MOVIES) {
+            moviesDataObservable = moviesService.getPopularMovies();
+        } else {
+            moviesDataObservable = moviesService.getTopRatedMovies();
+        }
+        moviesDataObservable.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<MoviesData>() {
                     @Override
                     public void call(MoviesData moviesData) {
@@ -45,9 +58,18 @@ public class MoviesPresenter implements MoviesContract.Presenter {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        // HANDLE ERROR
+                        Timber.e(throwable);
                     }
                 });
+    }
 
+    @Override
+    public MoviesFilterType getFilterType() {
+        return filterType;
+    }
+
+    @Override
+    public void setFilterType(MoviesFilterType filterType) {
+        this.filterType = filterType;
     }
 }

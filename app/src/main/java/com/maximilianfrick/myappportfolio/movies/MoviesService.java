@@ -9,4 +9,7 @@ public interface MoviesService {
 
     @GET("popular")
     Observable<MoviesData> getPopularMovies();
+
+    @GET("top_rated")
+    Observable<MoviesData> getTopRatedMovies();
 }
