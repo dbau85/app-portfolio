@@ -1,6 +1,5 @@
 package com.maximilianfrick.myappportfolio.core.dagger;
 
-import com.maximilianfrick.myappportfolio.core.BaseActivity;
 import com.maximilianfrick.myappportfolio.core.BaseApplication;
 import com.maximilianfrick.myappportfolio.movies.MoviesPresenter;
 import com.maximilianfrick.myappportfolio.movies.PopularMoviesActivity;
@@ -15,9 +14,8 @@ public interface AppComponent {
 
     BaseApplication application();
 
-    void inject(BaseActivity baseActivity);
-
     void inject(PopularMoviesActivity popularMoviesActivity);
 
     void inject(MoviesPresenter moviesPresenter);
+
 }

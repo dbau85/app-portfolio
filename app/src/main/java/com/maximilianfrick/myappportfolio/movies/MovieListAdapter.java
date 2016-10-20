@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.maximilianfrick.myappportfolio.R;
+import com.maximilianfrick.myappportfolio.movies.models.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
@@ -19,13 +20,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
-    private List<String> moviePosterPaths = Collections.emptyList();
+    private List<Movie> movies = Collections.emptyList();
     private final Picasso picasso;
     private String imageBaseUrl;
+    private final MoviesView.OnPosterClickListener listener;
 
-    MovieListAdapter(Context context) {
+    MovieListAdapter(Context context, MoviesView.OnPosterClickListener listener) {
         imageBaseUrl = context.getString(R.string.base_url_images);
         picasso = Picasso.with(context);
+        this.listener = listener;
     }
 
     @Override
@@ -41,11 +44,11 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return moviePosterPaths.size();
+        return movies.size();
     }
 
-    public void setItems(List<String> moviePosterPaths) {
-        this.moviePosterPaths = moviePosterPaths;
+    public void setItems(List<Movie> movies) {
+        this.movies = movies;
         notifyDataSetChanged();
     }
 
@@ -56,10 +59,16 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            poster.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onPosterClicked(movies.get(getAdapterPosition()));
+                }
+            });
         }
 
         void updateView(int position) {
-            String finalPosterPath = imageBaseUrl + moviePosterPaths.get(position);
+            String finalPosterPath = imageBaseUrl + movies.get(position).getPosterPath();
             picasso.load(Uri.parse(finalPosterPath)).config(Bitmap.Config.RGB_565).into(poster);
         }
     }

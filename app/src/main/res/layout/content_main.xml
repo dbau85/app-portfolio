@@ -19,45 +19,44 @@
 
     <Button
         android:id="@+id/btn_popular_movies"
-        style="@style/NanoDegreeButton"
-        android:theme="@style/NanoDegreeButton"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
-        android:text="@string/btn_popular_movies" />
+        android:text="@string/btn_popular_movies"
+        android:theme="@style/NanoDegreeButton" />
 
     <Button
         android:id="@+id/btn_stock_hawk"
-        style="@style/NanoDegreeButton"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
-        android:text="@string/btn_stock_hawk" />
+        android:text="@string/btn_stock_hawk"
+        android:theme="@style/NanoDegreeButton" />
 
     <Button
         android:id="@+id/btn_build_it_bigger"
-        style="@style/NanoDegreeButton"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
-        android:text="@string/btn_build_it_bigger" />
+        android:text="@string/btn_build_it_bigger"
+        android:theme="@style/NanoDegreeButton" />
 
     <Button
         android:id="@+id/btn_make_your_app_material"
-        style="@style/NanoDegreeButton"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
-        android:text="@string/btn_make_your_app_material" />
+        android:text="@string/btn_make_your_app_material"
+        android:theme="@style/NanoDegreeButton" />
 
     <Button
         android:id="@+id/btn_go_ubiqutous"
-        style="@style/NanoDegreeButton"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
-        android:text="@string/btn_go_ubiqutous" />
+        android:text="@string/btn_go_ubiqutous"
+        android:theme="@style/NanoDegreeButton" />
 
     <Button
         android:id="@+id/btn_capstone"
-        style="@style/NanoDegreeButton"
         android:layout_width="@dimen/btn_width"
         android:layout_height="wrap_content"
-        android:text="@string/btn_capstone" />
+        android:text="@string/btn_capstone"
+        android:theme="@style/NanoDegreeButton" />
 
 </LinearLayout>

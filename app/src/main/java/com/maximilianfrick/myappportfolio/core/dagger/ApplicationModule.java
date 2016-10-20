@@ -2,7 +2,6 @@ package com.maximilianfrick.myappportfolio.core.dagger;
 
 import android.content.Context;
 
-import com.maximilianfrick.myappportfolio.core.AppFlowController;
 import com.maximilianfrick.myappportfolio.core.BaseApplication;
 
 import javax.inject.Singleton;
@@ -31,11 +30,5 @@ public class ApplicationModule {
     @Singleton
     BaseApplication provideBaseApplication() {
         return application;
-    }
-
-    @Provides
-    @Singleton
-    AppFlowController provideAppFlowController() {
-        return new AppFlowController();
     }
 }

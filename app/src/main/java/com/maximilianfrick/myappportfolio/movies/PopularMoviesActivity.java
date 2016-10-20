@@ -4,18 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.maximilianfrick.myappportfolio.R;
-import com.maximilianfrick.myappportfolio.core.BaseActivity;
 import com.maximilianfrick.myappportfolio.core.dagger.Injector;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PopularMoviesActivity extends BaseActivity {
+public class PopularMoviesActivity extends AppCompatActivity {
     private static final String KEY_FILTER_TYPE = "KEY_FILTER_TYPE";
     @BindView(R.id.view_movies)
     MoviesContract.View moviesView;
@@ -32,7 +32,6 @@ public class PopularMoviesActivity extends BaseActivity {
         ButterKnife.bind(this);
         Injector.getAppComponent().inject(this);
         moviesPresenter = new MoviesPresenter(moviesView);
-
         if (savedInstanceState != null) {
             moviesPresenter.setFilterType((MoviesFilterType) savedInstanceState.getSerializable(KEY_FILTER_TYPE));
         }

@@ -1,20 +1,17 @@
 package com.maximilianfrick.myappportfolio.movies;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.maximilianfrick.myappportfolio.core.dagger.Injector;
 import com.maximilianfrick.myappportfolio.movies.models.Movie;
 import com.maximilianfrick.myappportfolio.movies.models.MoviesData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import timber.log.Timber;
 
 import static dagger.internal.Preconditions.checkNotNull;
 
@@ -22,7 +19,6 @@ public class MoviesPresenter implements MoviesContract.Presenter {
 
     @Inject
     MoviesService moviesService;
-    private List<String> moviePosterPaths;
     private final MoviesContract.View moviesView;
     private MoviesFilterType filterType = MoviesFilterType.POPULAR_MOVIES;
 
@@ -39,7 +35,6 @@ public class MoviesPresenter implements MoviesContract.Presenter {
 
     @Override
     public void loadMovies() {
-        moviePosterPaths = new ArrayList<>();
         Observable<MoviesData> moviesDataObservable;
         if (filterType == MoviesFilterType.POPULAR_MOVIES) {
             moviesDataObservable = moviesService.getPopularMovies();
@@ -50,15 +45,12 @@ public class MoviesPresenter implements MoviesContract.Presenter {
                 .subscribe(new Action1<MoviesData>() {
                     @Override
                     public void call(MoviesData moviesData) {
-                        for (Movie movie : moviesData.getMovies()) {
-                            moviePosterPaths.add(movie.getPosterPath());
-                        }
-                        moviesView.showMovies(moviePosterPaths);
+                        moviesView.showMovies(moviesData.getMovies());
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        Timber.e(throwable);
+                        Log.d(getClass().getSimpleName(), "loadMovies: ", throwable);
                     }
                 });
     }
@@ -71,5 +63,10 @@ public class MoviesPresenter implements MoviesContract.Presenter {
     @Override
     public void setFilterType(MoviesFilterType filterType) {
         this.filterType = filterType;
+    }
+
+    @Override
+    public void openMovieDetails(Movie movie) {
+
     }
 }

@@ -1,6 +1,7 @@
 package com.maximilianfrick.myappportfolio.movies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -10,6 +11,9 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.maximilianfrick.myappportfolio.R;
+import com.maximilianfrick.myappportfolio.movies.detail.MoviesDetailActivity;
+import com.maximilianfrick.myappportfolio.movies.models.Movie;
+import com.maximilianfrick.myappportfolio.utils.ActivityUtils;
 
 import java.util.List;
 
@@ -18,14 +22,13 @@ import butterknife.ButterKnife;
 
 import static dagger.internal.Preconditions.checkNotNull;
 
+
 public class MoviesView extends FrameLayout implements MoviesContract.View {
 
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
     private MovieListAdapter adapter;
-
     private MoviesContract.Presenter presenter;
-
 
     public MoviesView(Context context) {
         super(context);
@@ -46,7 +49,7 @@ public class MoviesView extends FrameLayout implements MoviesContract.View {
         inflate(getContext(), R.layout.movies_view_content, this);
         ButterKnife.bind(this);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        adapter = new MovieListAdapter(getContext());
+        adapter = new MovieListAdapter(getContext(), listener);
         recyclerView.setAdapter(adapter);
     }
 
@@ -56,8 +59,8 @@ public class MoviesView extends FrameLayout implements MoviesContract.View {
     }
 
     @Override
-    public void showMovies(List<String> moviePosterPaths) {
-        adapter.setItems(moviePosterPaths);
+    public void showMovies(List<Movie> movies) {
+        adapter.setItems(movies);
     }
 
     @Override
@@ -82,5 +85,17 @@ public class MoviesView extends FrameLayout implements MoviesContract.View {
                 return true;
             }
         });
+    }
+
+    OnPosterClickListener listener = new OnPosterClickListener() {
+        @Override
+        public void onPosterClicked(Movie movie) {
+            Intent intent = MoviesDetailActivity.newIntent(getContext(), movie);
+            ActivityUtils.getActivity(MoviesView.this).startActivity(intent);
+        }
+    };
+
+    public interface OnPosterClickListener {
+        void onPosterClicked(Movie item);
     }
 }

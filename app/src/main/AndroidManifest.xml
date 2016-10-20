@@ -25,6 +25,11 @@
             android:label="@string/label_movies"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".movies.detail.MoviesDetailActivity"
+            android:label="@string/label_movies_detail"
+            android:parentActivityName=".movies.PopularMoviesActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

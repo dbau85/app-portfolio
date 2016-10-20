@@ -2,12 +2,13 @@ package com.maximilianfrick.myappportfolio.movies;
 
 import com.maximilianfrick.myappportfolio.BasePresenter;
 import com.maximilianfrick.myappportfolio.BaseView;
+import com.maximilianfrick.myappportfolio.movies.models.Movie;
 
 import java.util.List;
 
 public interface MoviesContract {
     interface View extends BaseView<Presenter> {
-        void showMovies(List<String> moviePosterPaths);
+        void showMovies(List<Movie> movies);
 
         void showFilteringOptions();
     }
@@ -18,5 +19,7 @@ public interface MoviesContract {
         MoviesFilterType getFilterType();
 
         void setFilterType(MoviesFilterType filterType);
+
+        void openMovieDetails(Movie movie);
     }
 }
