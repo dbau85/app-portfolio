@@ -46,7 +46,7 @@ public class MoviesView extends FrameLayout implements MoviesContract.View {
     }
 
     private void init() {
-        inflate(getContext(), R.layout.movies_view_content, this);
+        inflate(getContext(), R.layout.content_movies_list, this);
         ButterKnife.bind(this);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         adapter = new MovieListAdapter(getContext(), listener);

@@ -2,5 +2,6 @@
 <resources>
 
     <string name="base_url_themoviedb">https://api.themoviedb.org/3/movie/</string>
-    <string name="base_url_images">http://image.tmdb.org/t/p/w185/</string>
+    <string name="base_url_images_poster">http://image.tmdb.org/t/p/w185/</string>
+    <string name="base_url_images_backdrop">http://image.tmdb.org/t/p/w342/</string>
 </resources>

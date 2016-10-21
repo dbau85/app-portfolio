@@ -29,7 +29,7 @@
             android:name=".movies.detail.MoviesDetailActivity"
             android:label="@string/label_movies_detail"
             android:parentActivityName=".movies.PopularMoviesActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

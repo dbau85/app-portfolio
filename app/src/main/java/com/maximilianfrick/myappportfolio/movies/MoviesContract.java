@@ -19,7 +19,5 @@ public interface MoviesContract {
         MoviesFilterType getFilterType();
 
         void setFilterType(MoviesFilterType filterType);
-
-        void openMovieDetails(Movie movie);
     }
 }

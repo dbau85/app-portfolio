@@ -26,7 +26,7 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>
     private final MoviesView.OnPosterClickListener listener;
 
     MovieListAdapter(Context context, MoviesView.OnPosterClickListener listener) {
-        imageBaseUrl = context.getString(R.string.base_url_images);
+        imageBaseUrl = context.getString(R.string.base_url_images_poster);
         picasso = Picasso.with(context);
         this.listener = listener;
     }

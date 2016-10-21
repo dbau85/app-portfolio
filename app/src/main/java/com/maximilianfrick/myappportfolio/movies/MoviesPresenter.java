@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.maximilianfrick.myappportfolio.core.dagger.Injector;
-import com.maximilianfrick.myappportfolio.movies.models.Movie;
 import com.maximilianfrick.myappportfolio.movies.models.MoviesData;
 
 import javax.inject.Inject;
@@ -65,8 +64,4 @@ public class MoviesPresenter implements MoviesContract.Presenter {
         this.filterType = filterType;
     }
 
-    @Override
-    public void openMovieDetails(Movie movie) {
-
-    }
 }
