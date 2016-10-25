@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
+class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.ViewHolder> {
     private List<Movie> movies = Collections.emptyList();
     private final Picasso picasso;
     private String imageBaseUrl;
     private final MoviesView.OnPosterClickListener listener;
 
-    MovieListAdapter(Context context, MoviesView.OnPosterClickListener listener) {
+    MoviesListAdapter(Context context, MoviesView.OnPosterClickListener listener) {
         imageBaseUrl = context.getString(R.string.base_url_images_poster);
         picasso = Picasso.with(context);
         this.listener = listener;
@@ -69,6 +70,7 @@ class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>
 
         void updateView(int position) {
             String finalPosterPath = imageBaseUrl + movies.get(position).getPosterPath();
+            Log.d("ImageUrl", finalPosterPath);
             picasso.load(Uri.parse(finalPosterPath)).config(Bitmap.Config.RGB_565).into(poster);
         }
     }

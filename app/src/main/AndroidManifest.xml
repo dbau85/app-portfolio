@@ -21,14 +21,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".movies.PopularMoviesActivity"
+            android:name=".movies.MoviesActivity"
             android:label="@string/label_movies"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".movies.detail.MoviesDetailActivity"
             android:label="@string/label_movies_detail"
-            android:parentActivityName=".movies.PopularMoviesActivity"
+            android:parentActivityName=".movies.MoviesActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

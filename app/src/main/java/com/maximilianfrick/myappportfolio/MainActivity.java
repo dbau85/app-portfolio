@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.maximilianfrick.myappportfolio.movies.PopularMoviesActivity;
+import com.maximilianfrick.myappportfolio.movies.MoviesActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_popular_movies)
     public void onClickMovies() {
-        startActivity(PopularMoviesActivity.newIntent(this));
+        startActivity(MoviesActivity.newIntent(this));
     }
 
     private void showToast(String text) {

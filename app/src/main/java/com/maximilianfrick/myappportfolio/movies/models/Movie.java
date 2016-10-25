@@ -24,7 +24,7 @@ public class Movie {
     private String releaseDate;
     @SerializedName("genre_ids")
     @Expose
-    private List<Integer> genreIds = new ArrayList<Integer>();
+    private List<Integer> genreIds = new ArrayList<>();
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -57,20 +57,12 @@ public class Movie {
         return posterPath;
     }
 
-    public Boolean getAdult() {
-        return adult;
-    }
-
     public String getOverview() {
         return overview;
     }
 
     public String getReleaseDate() {
         return releaseDate;
-    }
-
-    public List<Integer> getGenreIds() {
-        return genreIds;
     }
 
     public Integer getId() {
@@ -81,28 +73,12 @@ public class Movie {
         return originalTitle;
     }
 
-    public String getOriginalLanguage() {
-        return originalLanguage;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public String getBackdropPath() {
         return backdropPath;
-    }
-
-    public Double getPopularity() {
-        return popularity;
-    }
-
-    public Integer getVoteCount() {
-        return voteCount;
-    }
-
-    public Boolean getVideo() {
-        return video;
     }
 
     public Double getVoteAverage() {

@@ -1,6 +1,7 @@
 package com.maximilianfrick.myappportfolio.movies.detail;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,6 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MoviesDetailView extends FrameLayout implements MoviesDetailContract.View {
+    public static final String DATE_PATTERN_MOVIE_DB = "yyyy-MM-dd";
+
     @BindView(R.id.img_backdrop)
     ImageView imgBackDrop;
     @BindView(R.id.img_movie_poster)
@@ -55,10 +58,13 @@ public class MoviesDetailView extends FrameLayout implements MoviesDetailContrac
 
     @Override
     public void showMovieDetails(Movie movie) {
+        if (movie == null) {
+            return;
+        }
         Picasso picasso = Picasso.with(getContext());
         String backDropPath = getContext().getString(R.string.base_url_images_backdrop) + movie.getBackdropPath();
         String posterPath = getContext().getString(R.string.base_url_images_poster) + movie.getPosterPath();
-        DateFormat from = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        DateFormat from = new SimpleDateFormat(DATE_PATTERN_MOVIE_DB, Locale.getDefault());
         DateFormat to = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
         try {
             Date date = from.parse(movie.getReleaseDate());
@@ -73,7 +79,7 @@ public class MoviesDetailView extends FrameLayout implements MoviesDetailContrac
     }
 
     @Override
-    public void setPresenter(MoviesDetailContract.Presenter presenter) {
+    public void setPresenter(@NonNull MoviesDetailContract.Presenter presenter) {
         this.presenter = presenter;
     }
 }

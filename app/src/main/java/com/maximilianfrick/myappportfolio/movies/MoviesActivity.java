@@ -15,14 +15,14 @@ import com.maximilianfrick.myappportfolio.core.dagger.Injector;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PopularMoviesActivity extends AppCompatActivity {
+public class MoviesActivity extends AppCompatActivity {
     private static final String KEY_FILTER_TYPE = "KEY_FILTER_TYPE";
     @BindView(R.id.view_movies)
     MoviesContract.View moviesView;
     MoviesContract.Presenter moviesPresenter;
 
     public static Intent newIntent(Activity activity) {
-        return new Intent(activity, PopularMoviesActivity.class);
+        return new Intent(activity, MoviesActivity.class);
     }
 
     @Override

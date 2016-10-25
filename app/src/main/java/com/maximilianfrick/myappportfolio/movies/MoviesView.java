@@ -22,12 +22,11 @@ import butterknife.ButterKnife;
 
 import static dagger.internal.Preconditions.checkNotNull;
 
-
 public class MoviesView extends FrameLayout implements MoviesContract.View {
 
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
-    private MovieListAdapter adapter;
+    private MoviesListAdapter adapter;
     private MoviesContract.Presenter presenter;
 
     public MoviesView(Context context) {
@@ -48,8 +47,9 @@ public class MoviesView extends FrameLayout implements MoviesContract.View {
     private void init() {
         inflate(getContext(), R.layout.content_movies_list, this);
         ButterKnife.bind(this);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        adapter = new MovieListAdapter(getContext(), listener);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),
+                getContext().getResources().getInteger(R.integer.movie_poster_row_count)));
+        adapter = new MoviesListAdapter(getContext(), listener);
         recyclerView.setAdapter(adapter);
     }
 
