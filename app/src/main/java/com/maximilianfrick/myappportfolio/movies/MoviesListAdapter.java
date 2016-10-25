@@ -70,7 +70,6 @@ class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.ViewHolde
 
         void updateView(int position) {
             String finalPosterPath = imageBaseUrl + movies.get(position).getPosterPath();
-            Log.d("ImageUrl", finalPosterPath);
             picasso.load(Uri.parse(finalPosterPath)).config(Bitmap.Config.RGB_565).into(poster);
         }
     }
