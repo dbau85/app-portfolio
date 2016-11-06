@@ -1,7 +1,5 @@
 package com.maximilianfrick.myappportfolio.movies.detail;
 
-import android.support.annotation.NonNull;
-
 import com.maximilianfrick.myappportfolio.movies.models.Movie;
 
 import static dagger.internal.Preconditions.checkNotNull;

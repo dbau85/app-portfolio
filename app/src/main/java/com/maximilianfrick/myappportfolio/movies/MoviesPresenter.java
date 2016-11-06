@@ -1,8 +1,10 @@
 package com.maximilianfrick.myappportfolio.movies;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 
+import com.maximilianfrick.myappportfolio.R;
 import com.maximilianfrick.myappportfolio.core.dagger.Injector;
 import com.maximilianfrick.myappportfolio.movies.models.MoviesData;
 
@@ -49,6 +51,7 @@ public class MoviesPresenter implements MoviesContract.Presenter {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        moviesView.showErrorNoInternet();
                         Log.d(getClass().getSimpleName(), "loadMovies: ", throwable);
                     }
                 });
