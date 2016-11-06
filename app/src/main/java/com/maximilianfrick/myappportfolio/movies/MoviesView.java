@@ -3,6 +3,7 @@ package com.maximilianfrick.myappportfolio.movies;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -85,6 +86,11 @@ public class MoviesView extends FrameLayout implements MoviesContract.View {
                 return true;
             }
         });
+    }
+
+    @Override
+    public void showErrorNoInternet() {
+        Snackbar.make(this, getContext().getString(R.string.err_msg_no_internet), Snackbar.LENGTH_LONG).show();
     }
 
     OnPosterClickListener listener = new OnPosterClickListener() {

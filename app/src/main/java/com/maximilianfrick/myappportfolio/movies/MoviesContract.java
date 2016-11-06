@@ -11,6 +11,8 @@ public interface MoviesContract {
         void showMovies(List<Movie> movies);
 
         void showFilteringOptions();
+
+        void showErrorNoInternet();
     }
 
     interface Presenter extends BasePresenter {
