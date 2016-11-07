@@ -14,4 +14,5 @@
     <string name="label_movies_detail">Movie Details</string>
     <string name="vote_average">%.3s/10</string>
     <string name="err_msg_no_internet">Something went wrong, please check your internet connection and try again!</string>
+    <string name="title_trailers">Trailers</string>
 </resources>

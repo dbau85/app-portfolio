@@ -3,6 +3,7 @@ package com.maximilianfrick.myappportfolio.core.dagger;
 import com.maximilianfrick.myappportfolio.core.BaseApplication;
 import com.maximilianfrick.myappportfolio.movies.MoviesActivity;
 import com.maximilianfrick.myappportfolio.movies.MoviesPresenter;
+import com.maximilianfrick.myappportfolio.movies.detail.MoviesDetailPresenter;
 
 import javax.inject.Singleton;
 
@@ -18,4 +19,5 @@ public interface AppComponent {
 
     void inject(MoviesPresenter moviesPresenter);
 
+    void inject(MoviesDetailPresenter moviesDetailPresenter);
 }

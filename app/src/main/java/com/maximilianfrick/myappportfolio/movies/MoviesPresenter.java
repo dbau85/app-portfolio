@@ -1,10 +1,8 @@
 package com.maximilianfrick.myappportfolio.movies;
 
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 
-import com.maximilianfrick.myappportfolio.R;
 import com.maximilianfrick.myappportfolio.core.dagger.Injector;
 import com.maximilianfrick.myappportfolio.movies.models.MoviesData;
 
