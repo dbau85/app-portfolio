@@ -58,4 +58,10 @@ public class MoviesDetailActivity extends AppCompatActivity {
         super.onResume();
         detailPresenter.start();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        detailPresenter.onPause();
+    }
 }

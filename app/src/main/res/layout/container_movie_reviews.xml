@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
+
+        <com.maximilianfrick.myappportfolio.utils.NonScrollExpandableListView
+            android:id="@+id/expandablelistview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/darker_gray"
+            android:dividerHeight="0.5dp"
+            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+
+    </android.support.v7.widget.CardView>
+</merge>

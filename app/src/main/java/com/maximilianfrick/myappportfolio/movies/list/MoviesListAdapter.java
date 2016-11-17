@@ -1,10 +1,9 @@
-package com.maximilianfrick.myappportfolio.movies;
+package com.maximilianfrick.myappportfolio.movies.list;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

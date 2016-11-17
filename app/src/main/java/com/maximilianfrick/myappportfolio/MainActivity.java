@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.maximilianfrick.myappportfolio.movies.MoviesActivity;
+import com.maximilianfrick.myappportfolio.movies.list.MoviesActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

@@ -1,14 +1,16 @@
-package com.maximilianfrick.myappportfolio.movies;
+package com.maximilianfrick.myappportfolio.movies.list;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.maximilianfrick.myappportfolio.core.dagger.Injector;
+import com.maximilianfrick.myappportfolio.movies.MoviesService;
 import com.maximilianfrick.myappportfolio.movies.models.MoviesData;
 
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
@@ -20,10 +22,18 @@ public class MoviesPresenter implements MoviesContract.Presenter {
     MoviesService moviesService;
     private final MoviesContract.View moviesView;
     private MoviesFilterType filterType = MoviesFilterType.POPULAR_MOVIES;
+    private Subscription subscription;
 
     @Override
     public void start() {
         loadMovies();
+    }
+
+    @Override
+    public void onPause() {
+        if (subscription != null &&  !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
     }
 
     public MoviesPresenter(@NonNull MoviesContract.View view) {
@@ -40,7 +50,7 @@ public class MoviesPresenter implements MoviesContract.Presenter {
         } else {
             moviesDataObservable = moviesService.getTopRatedMovies();
         }
-        moviesDataObservable.observeOn(AndroidSchedulers.mainThread())
+        subscription = moviesDataObservable.observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<MoviesData>() {
                     @Override
                     public void call(MoviesData moviesData) {

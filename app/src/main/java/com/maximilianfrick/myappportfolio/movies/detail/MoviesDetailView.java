@@ -9,13 +9,17 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.maximilianfrick.myappportfolio.R;
 import com.maximilianfrick.myappportfolio.movies.models.Movie;
+import com.maximilianfrick.myappportfolio.movies.models.Review;
 import com.maximilianfrick.myappportfolio.movies.models.Trailer;
+import com.maximilianfrick.myappportfolio.utils.NonScrollExpandableListView;
+import com.maximilianfrick.myappportfolio.utils.SimpleDividerItemDecoration;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -43,9 +47,12 @@ public class MoviesDetailView extends FrameLayout implements MoviesDetailContrac
     TextView txtRating;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
+    @BindView(R.id.expandablelistview)
+    NonScrollExpandableListView expandableListView;
 
     MoviesDetailContract.Presenter presenter;
-    MovieTrailersAdapter adapter;
+    MovieTrailersAdapter trailersAdapter;
+    ReviewsExpListViewAdapter reviewsAdapter;
 
     public MoviesDetailView(Context context) {
         super(context);
@@ -66,11 +73,15 @@ public class MoviesDetailView extends FrameLayout implements MoviesDetailContrac
         inflate(getContext(), R.layout.content_movies_detail, this);
         ButterKnife.bind(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        adapter = new MovieTrailersAdapter(listener);
-        recyclerView.setAdapter(adapter);
+        trailersAdapter = new MovieTrailersAdapter(listener);
+        reviewsAdapter = new ReviewsExpListViewAdapter();
+        recyclerView.setAdapter(trailersAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 LinearLayoutManager.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+        // this improves the scrolling behaviour of the NestedScrollView
+        recyclerView.setNestedScrollingEnabled(false);
+        expandableListView.setAdapter(reviewsAdapter);
     }
 
     @Override
@@ -97,12 +108,17 @@ public class MoviesDetailView extends FrameLayout implements MoviesDetailContrac
 
     @Override
     public void showTrailerList(List<Trailer> trailers) {
-        adapter.setTrailers(trailers);
+        trailersAdapter.setTrailers(trailers);
     }
 
     @Override
     public void showErrorNoInternet() {
         Snackbar.make(this, getContext().getString(R.string.err_msg_no_internet), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showReviews(List<Review> reviews) {
+        reviewsAdapter.setReviews(reviews);
     }
 
     @Override

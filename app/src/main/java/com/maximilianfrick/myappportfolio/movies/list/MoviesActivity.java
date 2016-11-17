@@ -1,4 +1,4 @@
-package com.maximilianfrick.myappportfolio.movies;
+package com.maximilianfrick.myappportfolio.movies.list;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -41,6 +41,12 @@ public class MoviesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         moviesPresenter.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        moviesPresenter.onPause();
     }
 
     @Override

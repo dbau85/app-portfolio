@@ -1,4 +1,4 @@
-package com.maximilianfrick.myappportfolio.movies;
+package com.maximilianfrick.myappportfolio.movies.list;
 
 import android.content.Context;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package com.maximilianfrick.myappportfolio.movies;
+package com.maximilianfrick.myappportfolio.movies.list;
 
 import com.maximilianfrick.myappportfolio.BasePresenter;
 import com.maximilianfrick.myappportfolio.BaseView;

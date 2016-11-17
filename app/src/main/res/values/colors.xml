@@ -6,7 +6,7 @@
     <color name="udacious">#2E3D49</color>
     <color name="grey">#9E9E9E</color>
     <color name="dark_grey">#212121</color>
-
+    <color name="darker_gray">@android:color/darker_gray</color>
     <color name="black_opaque">#777777</color>
 
     <color name="window_background">#F3F3F3</color>
