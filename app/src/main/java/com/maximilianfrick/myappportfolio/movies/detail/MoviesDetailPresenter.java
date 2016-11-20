@@ -22,6 +22,8 @@ public class MoviesDetailPresenter implements MoviesDetailContract.Presenter {
 
     @Inject
     MoviesService moviesService;
+    @Inject
+    MovieFavoritesController movieFavoritesController;
 
     public MoviesDetailPresenter(MoviesDetailContract.View moviesDetailView, Movie movie) {
         Injector.getAppComponent().inject(this);
@@ -32,9 +34,14 @@ public class MoviesDetailPresenter implements MoviesDetailContract.Presenter {
 
     @Override
     public void start() {
+        updateMovie(movie);
         view.showMovieDetails(movie);
         loadTrailers();
         loadReviews();
+    }
+
+    private void updateMovie(Movie movie) {
+        this.movie.setFavorite(movieFavoritesController.isFavorite(movie));
     }
 
     private void loadTrailers() {
@@ -67,13 +74,16 @@ public class MoviesDetailPresenter implements MoviesDetailContract.Presenter {
     }
 
     @Override
-    public void addToFavorites(Movie movie) {
-
-    }
-
-    @Override
     public void onPause() {
         subscriptions.unsubscribe();
     }
 
+    @Override
+    public void addToFavorites(boolean isFavorite) {
+        if (isFavorite) {
+            movieFavoritesController.addMovieToFavorites(movie);
+        } else {
+            movieFavoritesController.deleteMovieFromFavorites(movie);
+        }
+    }
 }

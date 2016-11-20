@@ -79,6 +79,9 @@ public class MoviesView extends FrameLayout implements MoviesContract.View {
                     case R.id.filter_top_rated_movies:
                         presenter.setFilterType(MoviesFilterType.TOP_RATED_MOVIES);
                         break;
+                    case R.id.filter_favorites:
+                        presenter.setFilterType(MoviesFilterType.FAVORITES);
+                        break;
                     default:
                         return false;
                 }

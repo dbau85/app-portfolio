@@ -17,11 +17,12 @@ public interface MoviesDetailContract {
         void showErrorNoInternet();
 
         void showReviews(List<Review> reviews);
+
     }
 
     interface Presenter extends BasePresenter {
 
-        void addToFavorites(Movie movie);
+        void addToFavorites(boolean isFavorite);
 
     }
 }

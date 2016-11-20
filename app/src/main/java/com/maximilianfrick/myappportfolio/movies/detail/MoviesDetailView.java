@@ -5,14 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.maximilianfrick.myappportfolio.R;
 import com.maximilianfrick.myappportfolio.movies.models.Movie;
@@ -31,6 +30,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 
 public class MoviesDetailView extends FrameLayout implements MoviesDetailContract.View {
     public static final String DATE_PATTERN_MOVIE_DB = "yyyy-MM-dd";
@@ -45,6 +45,8 @@ public class MoviesDetailView extends FrameLayout implements MoviesDetailContrac
     TextView txtPlot;
     @BindView(R.id.txt_rating)
     TextView txtRating;
+    @BindView (R.id.btn_favorite)
+    ToggleButton btnFavorite;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
     @BindView(R.id.expandablelistview)
@@ -76,8 +78,6 @@ public class MoviesDetailView extends FrameLayout implements MoviesDetailContrac
         trailersAdapter = new MovieTrailersAdapter(listener);
         reviewsAdapter = new ReviewsExpListViewAdapter();
         recyclerView.setAdapter(trailersAdapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         // this improves the scrolling behaviour of the NestedScrollView
         recyclerView.setNestedScrollingEnabled(false);
@@ -104,6 +104,17 @@ public class MoviesDetailView extends FrameLayout implements MoviesDetailContrac
         picasso.load(posterPath).into(imgPoster);
         txtRating.setText(getContext().getString(R.string.vote_average, String.valueOf(movie.getVoteAverage())));
         txtPlot.setText(movie.getOverview());
+        btnFavorite.setChecked(movie.isFavorite());
+    }
+
+    @OnCheckedChanged (R.id.btn_favorite)
+    void checkedChanged(boolean isChecked) {
+        if (isChecked) {
+            btnFavorite.setBackgroundResource(R.drawable.ic_favorite);
+        } else {
+            btnFavorite.setBackgroundResource(R.drawable.ic_favorite_border);
+        }
+        presenter.addToFavorites(isChecked);
     }
 
     @Override

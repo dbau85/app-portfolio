@@ -1,9 +1,9 @@
 package com.maximilianfrick.myappportfolio.core.dagger;
 
 import com.maximilianfrick.myappportfolio.core.BaseApplication;
+import com.maximilianfrick.myappportfolio.movies.detail.MoviesDetailPresenter;
 import com.maximilianfrick.myappportfolio.movies.list.MoviesActivity;
 import com.maximilianfrick.myappportfolio.movies.list.MoviesPresenter;
-import com.maximilianfrick.myappportfolio.movies.detail.MoviesDetailPresenter;
 
 import javax.inject.Singleton;
 

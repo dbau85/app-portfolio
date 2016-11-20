@@ -2,8 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/filter_popular_movies"
-        android:title="Popular Movies" />
+        android:title="@string/popular_movies" />
     <item
         android:id="@+id/filter_top_rated_movies"
-        android:title="Top Rated Movies" />
+        android:title="@string/top_rated_movies" />
+    <item
+        android:id="@+id/filter_favorites"
+        android:title="@string/favorites" />
 </menu>

@@ -52,6 +52,7 @@ public class Movie {
     @SerializedName("vote_average")
     @Expose
     private Double voteAverage;
+    private boolean isFavorite;
 
     public String getPosterPath() {
         return posterPath;
@@ -83,5 +84,13 @@ public class Movie {
 
     public Double getVoteAverage() {
         return voteAverage;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }

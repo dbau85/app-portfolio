@@ -17,4 +17,7 @@
     <string name="title_trailers">Trailers</string>
     <string name="trailers">Trailers</string>
     <string name="reviews">Reviews</string>
+    <string name="favorites">Favorites</string>
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="popular_movies">Popular Movies</string>
 </resources>
