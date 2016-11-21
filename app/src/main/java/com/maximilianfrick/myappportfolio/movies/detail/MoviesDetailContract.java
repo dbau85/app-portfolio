@@ -24,5 +24,6 @@ public interface MoviesDetailContract {
 
         void addToFavorites(boolean isFavorite);
 
+        void loadMovie(Movie movie);
     }
 }

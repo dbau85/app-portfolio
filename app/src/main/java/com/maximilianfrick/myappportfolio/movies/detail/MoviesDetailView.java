@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,10 +32,11 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
+import butterknife.Optional;
 
 public class MoviesDetailView extends FrameLayout implements MoviesDetailContract.View {
     public static final String DATE_PATTERN_MOVIE_DB = "yyyy-MM-dd";
-
+    @Nullable
     @BindView(R.id.img_backdrop)
     ImageView imgBackDrop;
     @BindView(R.id.img_movie_poster)
@@ -100,7 +102,9 @@ public class MoviesDetailView extends FrameLayout implements MoviesDetailContrac
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        picasso.load(backDropPath).into(imgBackDrop);
+        if (imgBackDrop != null) {
+            picasso.load(backDropPath).into(imgBackDrop);
+        }
         picasso.load(posterPath).into(imgPoster);
         txtRating.setText(getContext().getString(R.string.vote_average, String.valueOf(movie.getVoteAverage())));
         txtPlot.setText(movie.getOverview());

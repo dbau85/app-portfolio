@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.maximilianfrick.myappportfolio.R;
 import com.maximilianfrick.myappportfolio.core.dagger.Injector;
+import com.maximilianfrick.myappportfolio.movies.detail.MoviesDetailContract;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +32,12 @@ public class MoviesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movies);
         ButterKnife.bind(this);
         Injector.getAppComponent().inject(this);
-        moviesPresenter = new MoviesPresenter(moviesView);
+        if (findViewById(R.id.view_movies_detail) != null) {
+            MoviesDetailContract.View detailView = (MoviesDetailContract.View) findViewById(R.id.view_movies_detail);
+            moviesPresenter = new MoviesPresenter(moviesView, detailView);
+        } else {
+            moviesPresenter = new MoviesPresenter(moviesView);
+        }
         if (savedInstanceState != null) {
             moviesPresenter.setFilterType((MoviesFilterType) savedInstanceState.getSerializable(KEY_FILTER_TYPE));
         }

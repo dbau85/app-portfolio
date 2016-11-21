@@ -28,20 +28,28 @@ public class MoviesDetailPresenter implements MoviesDetailContract.Presenter {
     public MoviesDetailPresenter(MoviesDetailContract.View moviesDetailView, Movie movie) {
         Injector.getAppComponent().inject(this);
         this.view = checkNotNull(moviesDetailView, "View may not be null!");
-        this.movie = checkNotNull(movie, "Movie may not be null!");
+        this.movie = movie;
         view.setPresenter(this);
     }
 
     @Override
     public void start() {
-        updateMovie(movie);
+        if (movie == null) {
+            return;
+        }
+        handleFavoriteStatus(movie);
         view.showMovieDetails(movie);
         loadTrailers();
         loadReviews();
     }
 
-    private void updateMovie(Movie movie) {
+    private void handleFavoriteStatus(Movie movie) {
         this.movie.setFavorite(movieFavoritesController.isFavorite(movie));
+    }
+
+    public void loadMovie(Movie movie) {
+        this.movie = movie;
+        start();
     }
 
     private void loadTrailers() {

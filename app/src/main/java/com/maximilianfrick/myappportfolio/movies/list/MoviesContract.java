@@ -21,5 +21,9 @@ public interface MoviesContract {
         MoviesFilterType getFilterType();
 
         void setFilterType(MoviesFilterType filterType);
+
+        boolean isMultiPane();
+
+        void loadDetailView(Movie movie);
     }
 }

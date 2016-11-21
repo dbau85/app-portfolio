@@ -99,8 +99,12 @@ public class MoviesView extends FrameLayout implements MoviesContract.View {
     OnPosterClickListener listener = new OnPosterClickListener() {
         @Override
         public void onPosterClicked(Movie movie) {
-            Intent intent = MoviesDetailActivity.newIntent(getContext(), movie);
-            ActivityUtils.getActivity(MoviesView.this).startActivity(intent);
+            if (presenter.isMultiPane()) {
+                presenter.loadDetailView(movie);
+            } else {
+                Intent intent = MoviesDetailActivity.newIntent(getContext(), movie);
+                ActivityUtils.getActivity(MoviesView.this).startActivity(intent);
+            }
         }
     };
 
