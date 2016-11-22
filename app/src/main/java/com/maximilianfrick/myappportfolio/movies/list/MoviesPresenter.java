@@ -1,13 +1,15 @@
 package com.maximilianfrick.myappportfolio.movies.list;
 
-import android.support.annotation.NonNull;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import com.maximilianfrick.myappportfolio.Presenter;
 import com.maximilianfrick.myappportfolio.core.dagger.Injector;
-import com.maximilianfrick.myappportfolio.movies.MoviesService;
+import com.maximilianfrick.myappportfolio.movies.MovieManager;
 import com.maximilianfrick.myappportfolio.movies.detail.MovieFavoritesController;
-import com.maximilianfrick.myappportfolio.movies.detail.MoviesDetailContract;
-import com.maximilianfrick.myappportfolio.movies.detail.MoviesDetailPresenter;
+import com.maximilianfrick.myappportfolio.movies.detail.MoviesDetailActivity;
 import com.maximilianfrick.myappportfolio.movies.models.Movie;
 import com.maximilianfrick.myappportfolio.movies.models.MoviesData;
 
@@ -23,142 +25,123 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
-import static dagger.internal.Preconditions.checkNotNull;
+public class MoviesPresenter extends Presenter<MoviesContract.View> {
 
-public class MoviesPresenter implements MoviesContract.Presenter {
+   @Inject
+   MovieFavoritesController movieFavoritesController;
+   @Inject
+   MovieManager movieManager;
+   private MoviesFilterType filterType = MoviesFilterType.POPULAR_MOVIES;
+   private Subscription subscription;
 
-    @Inject
-    MoviesService moviesService;
-    @Inject
-    MovieFavoritesController movieFavoritesController;
-    private final MoviesContract.View listView;
-    private MoviesFilterType filterType = MoviesFilterType.POPULAR_MOVIES;
-    private Subscription subscription;
+   public MoviesPresenter() {
+      Injector.getAppComponent()
+            .inject(this);
+   }
 
-    // Only for multipane view
-    private MoviesDetailContract.View detailView;
-    private MoviesDetailContract.Presenter detailPresenter;
+   void setFilterType(MoviesFilterType filterType) {
+      this.filterType = filterType;
+   }
 
-    @Override
-    public void start() {
-        loadMovies();
-        if (isMultiPane()) {
-            detailPresenter.start();
-        }
-    }
+   @Override
+   protected void bindView(MoviesContract.View view, Context context) {
+      super.bindView(view, context);
+      start();
+   }
 
-    @Override
-    public void onPause() {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-        if (isMultiPane()) {
-            detailPresenter.onPause();
-        }
-    }
+   @Override
+   protected void unbindView() {
+      super.unbindView();
+      if (subscription != null && !subscription.isUnsubscribed()) {
+         subscription.unsubscribe();
+      }
+   }
 
-    public MoviesPresenter(@NonNull MoviesContract.View view) {
-        Injector.getAppComponent().inject(this);
-        listView = checkNotNull(view, "View cannot be null!");
-        listView.setPresenter(this);
-    }
+   void onPosterClick(Movie movie) {
+      if (movieManager.getMovieDetail()
+            .hasObservers()) {
+         movieManager.setMovieDetail(movie);
+      } else {
+         Intent intent = MoviesDetailActivity.newIntent(getContext(), movie);
+         ActivityCompat.startActivity(getContext(), intent, null);
+      }
+   }
 
-    public MoviesPresenter(MoviesContract.View listView, MoviesDetailContract.View detailView) {
-        Injector.getAppComponent().inject(this);
-        this.listView = checkNotNull(listView, "View cannot be null!");
-        this.listView.setPresenter(this);
-
-        this.detailView = checkNotNull(detailView, "View cannot be null!");
-        detailPresenter = new MoviesDetailPresenter(this.detailView, null);
-        this.detailView.setPresenter(detailPresenter);
-    }
-
-    @Override
-    public void loadMovies() {
-        Observable<List<Movie>> moviesDataObservable = getMoviesDataObservable();
-        subscription = moviesDataObservable.observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Movie>>() {
-                    @Override
-                    public void call(List<Movie> movieList) {
-                        listView.showMovies(movieList);
-                        if (isMultiPane()) {
-                            detailPresenter.loadMovie(movieList.get(0));
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        listView.showErrorNoInternet();
-                        Log.d(getClass().getSimpleName(), "loadMovies: ", throwable);
-                    }
-                });
-    }
-
-    private Observable<List<Movie>> getMoviesDataObservable() {
-        Observable<List<Movie>> moviesDataObservable;
-        switch (filterType) {
-            case POPULAR_MOVIES:
-                moviesDataObservable = moviesService.getPopularMovies().map(new Func1<MoviesData, List<Movie>>() {
-                    @Override
-                    public List<Movie> call(MoviesData moviesData) {
+   private Observable<List<Movie>> getMoviesDataObservable() {
+      Observable<List<Movie>> moviesDataObservable;
+      switch (filterType) {
+         case POPULAR_MOVIES:
+            moviesDataObservable = movieManager.getPopularMovies()
+                  .map(new Func1<MoviesData, List<Movie>>() {
+                     @Override
+                     public List<Movie> call(MoviesData moviesData) {
                         return moviesData.getMovies();
-                    }
-                });
-                break;
-            case TOP_RATED_MOVIES:
-                moviesDataObservable = moviesService.getTopRatedMovies().map(new Func1<MoviesData, List<Movie>>() {
-                    @Override
-                    public List<Movie> call(MoviesData moviesData) {
+                     }
+                  });
+            break;
+         case TOP_RATED_MOVIES:
+            moviesDataObservable = movieManager.getTopRatedMovies()
+                  .map(new Func1<MoviesData, List<Movie>>() {
+                     @Override
+                     public List<Movie> call(MoviesData moviesData) {
                         return moviesData.getMovies();
-                    }
-                });
-                break;
-            case FAVORITES:
-                moviesDataObservable = Observable.zip(moviesService.getPopularMovies(), moviesService.getTopRatedMovies(), new Func2<MoviesData, MoviesData, List<Movie>>() {
-                    @Override
-                    public List<Movie> call(MoviesData moviesData, MoviesData moviesData2) {
-                        List<Movie> combinedList = new ArrayList<>();
-                        List<Movie> filteredList = new ArrayList<>();
-                        List<Integer> favoritesList = movieFavoritesController.getFavoritesIdList();
-                        combinedList.addAll(moviesData.getMovies());
-                        combinedList.addAll(moviesData2.getMovies());
-                        for (Movie movie : combinedList) {
-                            if (favoritesList.contains(movie.getId())) {
-                                filteredList.add(movie);
-                            }
-                        }
-                        return filteredList;
-                    }
-                });
-                break;
-            default:
-                moviesDataObservable = moviesService.getTopRatedMovies().switchMap(new Func1<MoviesData, Observable<List<Movie>>>() {
-                    @Override
-                    public Observable<List<Movie>> call(MoviesData moviesData) {
+                     }
+                  });
+            break;
+         case FAVORITES:
+            moviesDataObservable =
+                  Observable.zip(movieManager.getPopularMovies(), movieManager.getTopRatedMovies(),
+                        new Func2<MoviesData, MoviesData, List<Movie>>() {
+                           @Override
+                           public List<Movie> call(MoviesData moviesData, MoviesData moviesData2) {
+                              List<Movie> combinedList = new ArrayList<>();
+                              List<Movie> filteredList = new ArrayList<>();
+                              List<Integer> favoritesList =
+                                    movieFavoritesController.getFavoritesIdList();
+                              combinedList.addAll(moviesData.getMovies());
+                              combinedList.addAll(moviesData2.getMovies());
+                              for (Movie movie : combinedList) {
+                                 if (favoritesList.contains(movie.getId())) {
+                                    filteredList.add(movie);
+                                 }
+                              }
+                              return filteredList;
+                           }
+                        });
+            break;
+         default:
+            moviesDataObservable = movieManager.getTopRatedMovies()
+                  .switchMap(new Func1<MoviesData, Observable<List<Movie>>>() {
+                     @Override
+                     public Observable<List<Movie>> call(MoviesData moviesData) {
                         return Observable.just(moviesData.getMovies());
-                    }
-                });
-        }
-        return moviesDataObservable;
-    }
+                     }
+                  });
+      }
+      return moviesDataObservable;
+   }
 
-    @Override
-    public MoviesFilterType getFilterType() {
-        return filterType;
-    }
+   private void loadMovies() {
+      Observable<List<Movie>> moviesDataObservable = getMoviesDataObservable();
+      subscription = moviesDataObservable.observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Action1<List<Movie>>() {
+               @Override
+               public void call(List<Movie> movieList) {
+                  getView().showMovies(movieList);
+                  if (movieList.size() > 0) {
+                     movieManager.setMovieDetail(movieList.get(0));
+                  }
+               }
+            }, new Action1<Throwable>() {
+               @Override
+               public void call(Throwable throwable) {
+                  getView().showErrorNoInternet();
+                  Log.d(getClass().getSimpleName(), "loadMovies: ", throwable);
+               }
+            });
+   }
 
-    @Override
-    public void setFilterType(MoviesFilterType filterType) {
-        this.filterType = filterType;
-    }
-
-    @Override
-    public boolean isMultiPane() {
-        return detailView != null;
-    }
-
-    @Override
-    public void loadDetailView(Movie movie) {
-        detailPresenter.loadMovie(movie);
-    }
+   private void start() {
+      loadMovies();
+   }
 }

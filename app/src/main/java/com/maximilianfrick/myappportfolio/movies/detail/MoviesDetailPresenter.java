@@ -1,7 +1,10 @@
 package com.maximilianfrick.myappportfolio.movies.detail;
 
+import android.content.Context;
+
+import com.maximilianfrick.myappportfolio.Presenter;
 import com.maximilianfrick.myappportfolio.core.dagger.Injector;
-import com.maximilianfrick.myappportfolio.movies.MoviesService;
+import com.maximilianfrick.myappportfolio.movies.MovieManager;
 import com.maximilianfrick.myappportfolio.movies.models.Movie;
 import com.maximilianfrick.myappportfolio.movies.models.ReviewsData;
 import com.maximilianfrick.myappportfolio.movies.models.TrailersData;
@@ -12,86 +15,102 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
-import static dagger.internal.Preconditions.checkNotNull;
+public class MoviesDetailPresenter extends Presenter<MoviesDetailContract.View> {
 
-public class MoviesDetailPresenter implements MoviesDetailContract.Presenter {
+   @Inject
+   MovieFavoritesController movieFavoritesController;
+   @Inject
+   MovieManager movieManager;
+   private Movie movie;
+   private CompositeSubscription subscriptions = new CompositeSubscription();
 
-    private MoviesDetailContract.View view;
-    private Movie movie;
-    private CompositeSubscription subscriptions = new CompositeSubscription();
+   public MoviesDetailPresenter() {
+      Injector.getAppComponent()
+            .inject(this);
+   }
 
-    @Inject
-    MoviesService moviesService;
-    @Inject
-    MovieFavoritesController movieFavoritesController;
+   void addToFavorites(boolean isFavorite) {
+      if (isFavorite) {
+         movieFavoritesController.addMovieToFavorites(movie);
+      } else {
+         movieFavoritesController.deleteMovieFromFavorites(movie);
+      }
+   }
 
-    public MoviesDetailPresenter(MoviesDetailContract.View moviesDetailView, Movie movie) {
-        Injector.getAppComponent().inject(this);
-        this.view = checkNotNull(moviesDetailView, "View may not be null!");
-        this.movie = movie;
-        view.setPresenter(this);
-    }
+   @Override
+   protected void bindView(MoviesDetailContract.View view, Context context) {
+      super.bindView(view, context);
+      loadDetail();
+   }
 
-    @Override
-    public void start() {
-        if (movie == null) {
-            return;
-        }
-        handleFavoriteStatus(movie);
-        view.showMovieDetails(movie);
-        loadTrailers();
-        loadReviews();
-    }
+   @Override
+   protected void unbindView() {
+      super.unbindView();
+      if (subscriptions != null && !subscriptions.isUnsubscribed()) {
+         subscriptions.unsubscribe();
+      }
+   }
 
-    private void handleFavoriteStatus(Movie movie) {
-        this.movie.setFavorite(movieFavoritesController.isFavorite(movie));
-    }
+   private void handleFavoriteStatus(Movie movie) {
+      this.movie.setFavorite(movieFavoritesController.isFavorite(movie));
+   }
 
-    public void loadMovie(Movie movie) {
-        this.movie = movie;
-        start();
-    }
+   private void loadReviews() {
+      subscriptions.add(movieManager.getReviews(movie.getId())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Action1<ReviewsData>() {
+               @Override
+               public void call(ReviewsData reviewsData) {
+                  getView().showReviews(reviewsData.getReviews());
+               }
+            }, new Action1<Throwable>() {
+               @Override
+               public void call(Throwable throwable) {
+                  getView().showErrorNoInternet();
+               }
+            }));
+   }
 
-    private void loadTrailers() {
-        subscriptions.add(moviesService.getTrailers(movie.getId()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<TrailersData>() {
-                    @Override
-                    public void call(TrailersData trailersData) {
-                        view.showTrailerList(trailersData.getTrailers());
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        view.showErrorNoInternet();
-                    }
-                }));
-    }
+   private void loadTrailers() {
+      subscriptions.add(movieManager.getTrailers(movie.getId())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Action1<TrailersData>() {
+               @Override
+               public void call(TrailersData trailersData) {
+                  getView().showTrailerList(trailersData.getTrailers());
+               }
+            }, new Action1<Throwable>() {
+               @Override
+               public void call(Throwable throwable) {
+                  getView().showErrorNoInternet();
+               }
+            }));
+   }
 
-    private void loadReviews() {
-        subscriptions.add(moviesService.getReviews(movie.getId()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<ReviewsData>() {
-            @Override
-            public void call(ReviewsData reviewsData) {
-                view.showReviews(reviewsData.getReviews());
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                view.showErrorNoInternet();
-            }
-        }));
-    }
+   private void loadDetail() {
+      subscriptions.add(movieManager.getMovieDetail()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Action1<Movie>() {
+               @Override
+               public void call(Movie movie) {
+                  MoviesDetailPresenter.this.movie = movie;
+                  start();
+               }
+            }, new Action1<Throwable>() {
+               @Override
+               public void call(Throwable throwable) {
+                  getView().showErrorNoInternet();
+               }
+            }));
+   }
 
-    @Override
-    public void onPause() {
-        subscriptions.unsubscribe();
-    }
-
-    @Override
-    public void addToFavorites(boolean isFavorite) {
-        if (isFavorite) {
-            movieFavoritesController.addMovieToFavorites(movie);
-        } else {
-            movieFavoritesController.deleteMovieFromFavorites(movie);
-        }
-    }
+   private void start() {
+      if (movie == null) {
+         return;
+      }
+      handleFavoriteStatus(movie);
+      getView().showMovieDetails(movie);
+      loadTrailers();
+      loadReviews();
+   }
 }

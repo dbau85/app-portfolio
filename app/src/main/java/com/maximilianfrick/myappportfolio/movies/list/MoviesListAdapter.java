@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.ViewHolder> {
     private List<Movie> movies = Collections.emptyList();
@@ -47,7 +48,7 @@ class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.ViewHolde
         return movies.size();
     }
 
-    public void setItems(List<Movie> movies) {
+    void setItems(List<Movie> movies) {
         this.movies = movies;
         notifyDataSetChanged();
     }
@@ -59,12 +60,11 @@ class MoviesListAdapter extends RecyclerView.Adapter<MoviesListAdapter.ViewHolde
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            poster.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onPosterClicked(movies.get(getAdapterPosition()));
-                }
-            });
+        }
+
+        @OnClick(R.id.img_movie_poster)
+        void onClick(){
+            listener.onPosterClicked(movies.get(getAdapterPosition()));
         }
 
         void updateView(int position) {

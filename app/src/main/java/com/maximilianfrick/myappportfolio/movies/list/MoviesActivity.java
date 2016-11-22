@@ -11,71 +11,42 @@ import android.view.MenuItem;
 
 import com.maximilianfrick.myappportfolio.R;
 import com.maximilianfrick.myappportfolio.core.dagger.Injector;
-import com.maximilianfrick.myappportfolio.movies.detail.MoviesDetailContract;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MoviesActivity extends AppCompatActivity {
-    private static final String KEY_FILTER_TYPE = "KEY_FILTER_TYPE";
-    @BindView(R.id.view_movies)
-    MoviesContract.View moviesView;
-    MoviesContract.Presenter moviesPresenter;
+   @BindView (R.id.view_movies)
+   MoviesContract.View moviesView;
 
-    public static Intent newIntent(Activity activity) {
-        return new Intent(activity, MoviesActivity.class);
-    }
+   public static Intent newIntent(Activity activity) {
+      return new Intent(activity, MoviesActivity.class);
+   }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movies);
-        ButterKnife.bind(this);
-        Injector.getAppComponent().inject(this);
-        if (findViewById(R.id.view_movies_detail) != null) {
-            MoviesDetailContract.View detailView = (MoviesDetailContract.View) findViewById(R.id.view_movies_detail);
-            moviesPresenter = new MoviesPresenter(moviesView, detailView);
-        } else {
-            moviesPresenter = new MoviesPresenter(moviesView);
-        }
-        if (savedInstanceState != null) {
-            moviesPresenter.setFilterType((MoviesFilterType) savedInstanceState.getSerializable(KEY_FILTER_TYPE));
-        }
-    }
+   @Override
+   protected void onCreate(@Nullable Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.activity_movies);
+      ButterKnife.bind(this);
+      Injector.getAppComponent()
+            .inject(this);
+   }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        moviesPresenter.start();
-    }
+   @Override
+   public boolean onCreateOptionsMenu(Menu menu) {
+      MenuInflater inflater = getMenuInflater();
+      inflater.inflate(R.menu.movies_menu, menu);
+      return true;
+   }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        moviesPresenter.onPause();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.movies_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_filter:
-                moviesView.showFilteringOptions();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(KEY_FILTER_TYPE, moviesPresenter.getFilterType());
-        super.onSaveInstanceState(outState);
-    }
+   @Override
+   public boolean onOptionsItemSelected(MenuItem item) {
+      switch (item.getItemId()) {
+         case R.id.menu_filter:
+            moviesView.showFilteringOptions();
+            return true;
+         default:
+            return super.onOptionsItemSelected(item);
+      }
+   }
 }
